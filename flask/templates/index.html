@@ -3,6 +3,32 @@
 	<head>
 		<meta charset="UTF-8"/>
 		<title>Students</title>
+<script
+  src="http://code.jquery.com/jquery-3.4.1.js"
+  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+  crossorigin="anonymous"></script>
+  		<script>
+  			$(document).ready(()=>{
+  				$("#load-students").click(()=>{
+  					$.ajax({
+  						url:"/list-rest",
+  						cache:false,
+  					}).done(data =>{
+  						students = JSON.parse(data)
+  						let tBodyHtml = ''
+  						for(let row of students){
+  							tBodyHtml += `<tr>
+  							<td>${row['id']}</td>
+  							<td>${row['name']}</td>
+  							<td>${row['email']}</td>
+  							</tr>
+  							`
+  						}
+  						$("table tbody").html(tBodyHtml)
+  					})
+  				})
+  			})
+  		</script>
 		</head>
 	<body>
 		Hello world
@@ -15,5 +41,20 @@
 			<input type="email" name="email" placeholder="Your email"/>
 			<button type="submit">등록하기</button>
 		</form>
+		<h1>학생 명단</h1>
+		<button id = "load-students">학생 불러오기</button>
+		<table>
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>이름</th>
+					<th>이메일</th>
+				</tr>
+			</thead>
+			<tbody>
+
+			</tbody>
+		</table>
+
 		</body>
 </html>

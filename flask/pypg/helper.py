@@ -1,4 +1,5 @@
 import psycopg2 as pg
+import psycopg2.extras
 
 pg_local = {
     'host':"localhost",
@@ -59,7 +60,7 @@ def create_table(table_name):
     except pg.OperationalError as e:
         print(e)
 
-def insert(table_name):
+def insert(table_name,sid,name,email):
     sql = f'''INSERT INTO {table_name}
             VALUES({sid},\'{name}\', \'{email}\');
         '''
@@ -77,6 +78,25 @@ def insert(table_name):
         print(e)
         return -1
     return 0
+
+def students_list():
+    sql = f'''SELECT id, name, email FROM student
+        '''
+    print("lists")
+    try:
+        conn = pg.connect(connect_string)#db 연결
+        cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)#작업할 지시자 정하기
+        cur.execute(sql)#실행
+
+        result = cur.fetchall()
+        print(result)
+        conn.close()
+        return result
+    except Exception as e:
+        print(e)
+        return []
+
+
 
 def main():
     print("pg!")
